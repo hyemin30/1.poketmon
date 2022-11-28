@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatibla" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            font-family: 'Jua', sans-serif;
+        }
+        .mypost {
+            width: 600px;
+            max-width: 500px;
+            margin: 20px auto 0px 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 3px 0px gray;
+
+        }
+
+        .mybtns {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 20px;
+        }
+
+        .mybtns > button {
+            margin-right: 10px;
+        }
+
+        .reservation {
+            margin-top: 15px;
+        }
+
+        .container{
+            margin: 100px auto 100px auto;
+            background-color: #FEFCF3;
+            border-radius: 50px;
+            padding: 20px 0px;
+            height: 500px;
+            width: 520px;
+        }
+        .container > h1 {
+            text-align: center;
+        }
+    </style>
+
+    <title>회원가입화면</title>
+    <script>
+        function signup() {
+            let name = $('#name').val()
+            let id = $('#id').val()
+            let pwd = $('#pwd').val()
+            let pwd_re = $('#pwd_re').val()
+            if(pwd==pwd_re && $('#idcheck').val() == "check"){
+                $.ajax({
+                    type:"POST",
+                    url:"/signup",
+                    data:{"name_give":name,"id_give":id,"pwd_give":pwd},
+                    success:function(response){
+                        alert(response['msg'])
+                        location.href ='login'
+                    }
+                })
+            }else{
+                alert("비밀번호가 다르거나 아이디중복확인이필요")
+            }
+        }
+
+        function check_id(){
+            let id = $('#id').val()
+            $.ajax({
+                type:"GET",
+                url:"/idcheck",
+                data:{},
+                success:function(response){
+                    let id_rows = response['id_list']
+                    if(id_rows.length==0){
+                        $('#idcheck').val("check")
+                    }
+                    for (let i = 0; i < id_rows.length; i++) {
+                        if (id != id_rows[i]['id']) {
+                            console.log(id)
+                            console.log(id_rows[i])
+                            $('#idcheck').val("check")
+                            console.log($('#idcheck').val())
+                        } else {
+                            $('#idcheck').val("uncheck")
+                            alert("동일한 아이디가 있습니다")
+                            break;
+                        }
+                    }
+                    if($('#idcheck').val() == "check"){
+                        alert("사용가능합니다")
+                    }
+
+
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+
+        <div class="container">
+        <h1 class="title">회원가입하기</h1>
+
+        <div class="mypost" id="post-box">
+            <div class="reservation">
+                <div class="alert alert-danger" id="alert" role="alert">
+                    빠짐없이 입력하세요!
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">이&nbsp&nbsp&nbsp름</span>
+                    <input type="text" class="form-control" aria-label="Sizing example input"
+                           aria-describedby="inputGroup-sizing-default" id="name">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">아이디</span>
+                    <input class="form-control" aria-label="Sizing example input" id="id"
+                           aria-describedby="inputGroup-sizing-default">
+                    <button class="btn btn-outline-secondary" type="button" onclick="check_id()">중복확인</button>
+                    <input type="hidden" id="idcheck" value="uncheck"</p>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" >비밀번호</span>
+                    <input id="pwd" type="password"  class="form-control" aria-label="Sizing example input"
+                           aria-describedby="inputGroup-sizing-default">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" >비밀번호확인</span>
+                    <input id="pwd_re" type="password"  class="form-control" aria-label="Sizing example input"
+                           aria-describedby="inputGroup-sizing-default">
+                </div>
+
+            </div>
+            <div class="mybtns">
+                <button onclick="signup()" type="button" class="btn btn-danger"> 가입하기</button>
+                <button onclick="history.back()" type="button" class="btn btn-outline-danger"> 돌아가기</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

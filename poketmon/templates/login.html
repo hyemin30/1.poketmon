@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatibla" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            font-family: 'Jua', sans-serif;
+        }
+        .mypost {
+            width: 600px;
+            max-width: 500px;
+            margin: 20px auto 0px 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 3px 0px gray;
+
+        }
+
+        .mybtns {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 20px;
+        }
+
+        .mybtns > button {
+            margin-right: 10px;
+        }
+
+        .reservation {
+            margin-top: 15px;
+        }
+
+        .container{
+            margin: 100px auto 100px auto;
+            background-color: #FEFCF3;
+            border-radius: 50px;
+            padding: 20px 0px;
+            height: 500px;
+            width: 520px;
+        }
+        .container > h1 {
+            text-align: center;
+        }
+    </style>
+
+
+    <title>로그인화면</title>
+    <script>
+        function login() {
+            let id = $('#id').val()
+            let pw = $('#pw').val()
+            $.ajax({
+                type: "POST",
+                url: "/login",
+                data: {"id_give": id, "pwd_give": pw},
+                success: function (response) {
+                    alert(response['msg'])
+                    if(response['msg']=="로그인성공"){
+                        location.href='/'
+                    }
+
+
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+
+
+
+    <div class="container">
+        <h1 class="title">로그인하기</h1>
+
+        <div class="mypost" id="post-box">
+            <div class="reservation">
+                <div class="alert alert-danger" id="alert" role="alert">
+                    빠짐없이 입력하세요!
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">아&nbsp이&nbsp디&nbsp</span>
+                    <input type="text" class="form-control" aria-label="Sizing example input"
+                           aria-describedby="inputGroup-sizing-default" id="id">
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" >비밀번호</span>
+                    <input id="pw" type="password"  class="form-control" aria-label="Sizing example input"
+                           aria-describedby="inputGroup-sizing-default">
+                </div>
+
+            </div>
+            <div class="mybtns">
+                <button onclick="login()" type="button" class="btn btn-danger"> 로그인</button>
+                <button onclick="location.href='/signup'" type="button" class="btn btn-outline-danger"> 회원가입</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</body>
+</html>
